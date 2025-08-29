@@ -5,4 +5,12 @@ about:
     template: jolla
     links:
         - icon: linkedin
-          text: Link
+          text: LinkedIn
+          href: https://www.linkedin.com/in/nina-jobanputra/
+        - icon: github
+          text: Github
+          href: https://github.com/njobanputra
+---
+
+Nina Jobanputra is a current senior at [Harvey Mudd College](https://hmc.edu). Nina has taken many electrical engineering classes; Introduction to analog design, Radio Frequency circuit design, Principles of computer science, Data structures/Program developement and now Microprocessor Systems: Design and Applications. Nina has worked in a variety of fields but after graduation wants to work in medical devices or Biotech as an electrical engineer, but who knows what will happen after this year.
+

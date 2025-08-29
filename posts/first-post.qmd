@@ -9,4 +9,4 @@ categories:
 draft: false
 ---
 
-E155 is known as one of the hardest courses at mudd. 
+E155 is known as one of the hardest courses at mudd and so I'm defiently scared of what lies ahead. I know that this class will be hard but I hope it helps me solidfy being able to think in circuits vs code since that was a large downfall in E85. I also think being able to effectively debug a program.

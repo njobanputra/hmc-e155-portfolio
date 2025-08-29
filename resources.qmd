@@ -1,0 +1,3 @@
+## Resources
+
+This portfolio uses the [Harvey Mudd College E155 site](https://hmc-e155.github.io).

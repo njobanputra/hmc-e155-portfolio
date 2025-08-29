@@ -23,6 +23,8 @@ website:
           href: labs/lab6/lab6.qmd
         - text: Lab 7
           href: labs/lab7/lab7.qmd
+      - href: resources.qmd
+        text: Resources
       - href: blog.qmd
         text: Blog
 

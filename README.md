@@ -1,1 +1,1 @@
-This repository creates the quarto portfolio for the E155 class.
+This repository creates Nina's quarto portfolio for the E155 class. It holds lab reports, images, and reflection posts.

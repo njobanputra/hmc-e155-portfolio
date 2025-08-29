@@ -1,10 +1,12 @@
 ---
-title: "Hello Quarto"
-description: "Welcome to my Quarto portfolio"
-author: "Josh Brake"
-date: "8/23/24"
+title: "Beginning of Semester reflection"
+description: "What I hope and fear in this class"
+author: "Nina Jobanputra"
+date: "8/28/25"
 categories:
   - reflection
   - labreport
 draft: false
 ---
+
+E155 is known as one of the hardest courses at mudd. 

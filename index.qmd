@@ -1,0 +1,8 @@
+---
+title: "E155 Portfolio"
+image: images/headshot.png
+about:
+    template: jolla
+    links:
+        - icon: linkedin
+          text: Link

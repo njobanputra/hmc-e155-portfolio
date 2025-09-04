@@ -52,6 +52,12 @@ output of the simulation of led0's testbench
 output of the simulation of led1's testbench
 :::
 
+### SevenSegAD waves
+::: {#fig-led1s-testbench}
+![](images/seg.png)
+output of the simulation of my seven segment display testbench
+:::
+
 I think I spent a total of 25-27 hours on this lab. I ran into major issues with programming the FPGA which ended up gating me for about 4 days. Overall, the main difficulty of this lab was getting the platforms to work and getting myself familiar with them.
 
 ### AI prototype

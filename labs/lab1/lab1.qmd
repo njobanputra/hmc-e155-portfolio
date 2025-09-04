@@ -40,7 +40,19 @@ For the LEDs I used about 220$\Omega$ because that is a reasonable amount for a 
 ## Results and Discussion
 I tested the circuit and I was able to get all the segments to light up and control them through the dip switches. Additionally, the LEDs also worked as planned.
 
-I think I spent a total of 25-27 hours on this lab. I ran into major issues with programming the FPGA which ended up gating me for about 4 days.
+### LED0 waves
+::: {#fig-led0s-testbench}
+![](images/led0.png)
+output of the simulation of led0's testbench
+:::
+
+### LED1 waves
+::: {#fig-led1s-testbench}
+![](images/led1.png)
+output of the simulation of led1's testbench
+:::
+
+I think I spent a total of 25-27 hours on this lab. I ran into major issues with programming the FPGA which ended up gating me for about 4 days. Overall, the main difficulty of this lab was getting the platforms to work and getting myself familiar with them.
 
 ### AI prototype
 I used the given prompt, "" and gave it to ChatGPT, because it is free for a certain number of questions. It gave me the following code:

@@ -4,7 +4,7 @@
 In this lab I created code, and testbenches to control a 7-segment display. A user can use the 4 DIP switches to control the 7 segment display to show 0-F on the hexidecimal scale.
 
 # Technical Documentation
-The source code for this project can be found in this github repository.
+The source code for this project can be found in this [github repository](https://github.com/njobanputra/e155_lab01).
 
 ### Block Diagram
 ::: {#fig-block-diagram}
@@ -24,18 +24,61 @@ The top-level module `top` includes 4 submodules: the high-speed oscillator bloc
 Schematic of the physical circuit.
 :::
 
+@fig-schematic shows which pins were connected to the 7 segment display and which parts and resistor values I used.
+
 ### Finding Resistor Values
 ::: {#fig-math}
 ![](images/math.png)
 Math to calculate which resistor value to pick.
 :::
 
-@fig-schematic shows the physical layout of the design.
-The FPGA pins are connected to a resistor before entering into the seven segment display to ensure that the LED doesn't recieve too much current and thus burns out. For the seven segment display I used 1k$\Omega$ resistors on each segment (see math below).
+@fig-math shows the physical layout of the design.
+The FPGA pins are connected to a resistor before entering into the seven segment display to ensure that the LED doesn't receive too much current and thus burns out. For the seven segment display I used 1k$\Omega$ resistors on each segment (see math below).
 
-For the LEDs I used about 220\Omega$ because that is a reasonable amount for a red LED.
+For the LEDs I used about 220$\Omega$ because that is a reasonable amount for a red LED.
 
 ## Results and Discussion
-I tested the circuit and I was able to get all the segments to light up and control them through the dip switches. Additonally, the LEDs also worked as planned. However, not all of my segments are light to the same amount of brightness. I don't know why since they all recieved the same resistor value. If I have time I will continue to debug.
+I tested the circuit and I was able to get all the segments to light up and control them through the dip switches. Additionally, the LEDs also worked as planned.
 
 I think I spent a total of 25-27 hours on this lab. I ran into major issues with programming the FPGA which ended up gating me for about 4 days.
+
+### AI prototype
+I used the given prompt, "" and gave it to ChatGPT, because it is free for a certain number of questions. It gave me the following code:
+```default
+module led_blinker_2hz (
+    output logic led
+);
+
+    // Internal oscillator signal
+    logic clk_hf;
+
+    // Instantiate the internal high-frequency oscillator
+    SB_HFOSC #(
+        .CLKHF_DIV("0b00") // No division: 48 MHz
+    ) hfosc_inst (
+        .CLKHFEN(1'b1),   // Enable oscillator
+        .CLKHFPU(1'b1),   // Power up oscillator
+        .CLKHF(clk_hf)    // Output clock
+    );
+
+    // Counter to generate ~2 Hz blink rate from 48 MHz clock
+    localparam int COUNTER_MAX = 24_000_000; // Half period at 48 MHz
+    logic [$clog2(COUNTER_MAX)-1:0] counter = 0;
+
+    // LED state toggle
+    always_ff @(posedge clk_hf) begin
+        if (counter == COUNTER_MAX - 1) begin
+            counter <= 0;
+            led <= ~led;
+        end else begin
+            counter <= counter + 1;
+        end
+    end
+
+endmodule
+```
+The first thing that I noticed about this code is that it doesn't have a reset option in it. From my lab I found that you should definitely have a reset option so that you can put your LED into a known state. I then proceeded to point that out to the ChatGPT and it came back with more code. This output (not pictured) had some problems too. One it declared a counter number with no size or type. I could have nudged it more but I didn't feel like it and didn't know how to improve it because I wasn't prompting it correctly.
+
+Overall I would say the output was good as a bare bones and could have helped me think about how to do the problem but I would not copy and paste the output directly. What I decided to do was give ChatGPT one of my files but I made some errors in it, more along the lines of forgetting a semicolon. ChatGPT was great at catching those errors. So if I were to ever use AI in my job I would use it as another set of eyes to debug.
+
+

@@ -25,8 +25,10 @@ Schematic of the physical circuit.
 :::
 
 ### Finding Resistor Values
-::: {#fig-math to calculate which resistor value to pick.}
+::: {#fig-math}
 ![](images/math.png)
+Math to calculate which resistor value to pick.
+:::
 
 @fig-schematic shows the physical layout of the design.
 The FPGA pins are connected to a resistor before entering into the seven segment display to ensure that the LED doesn't recieve too much current and thus burns out. For the seven segment display I used 1k$\Omega$ resistors on each segment (see math below).

@@ -1,1 +1,48 @@
 ## Lab 2: Multiplexed 7-Segment Display
+
+
+# Introduction
+In this lab I created code, and testbenches to control two 7-segment display and used a multiplexer in order to display the two sides. A user can use the 2 DIP switches to control the two 7 segment display to show 0-F on the hexadecimal scale. As well as having the sum of the inputs together represented by 5 LEDs.
+
+
+# Technical Documentation
+The source code for this project can be found in this [github repository](https://github.com/njobanputra/e155).
+
+
+### Block Diagram
+::: {#fig-block-diagram}
+![](images/block-diagram.png)
+
+
+Block diagram of the Verilog design.
+:::
+
+
+The block diagram in @fig-block-diagram demonstrates the overall architecture of the design.
+The top-level module `top` includes 4 submodules.
+
+
+### Schematic
+::: {#fig-schematic}
+![](images/schematic.png)
+
+
+Schematic of the physical circuit.
+:::
+
+
+@fig-schematic shows which pins were connected to the double 7 segment display and which parts and resistor values I used.
+
+
+### Finding Resistor Values
+
+
+I had to use resistors for the transister. I used the datasheet provided in the lab and found that the V forward for the transistor was about 0.85V. I knew I was supplying 3.3V and current was 8 mA. Using Ohm's law I got (3.3-0.85)/(8*10^-3) which gave me a resistor value of 306.25$\Omega$. I then went to the stock room and found the only close resistor values we had were for 330$\Omega$ and 390$\Omega$. I would have gone with the 330$\Omega$ but at the time there was only 1 resistor and I needed two. So I opted to go with the 390$\Omega$ resistor. I redid my calculations to back track out current and found that the current was around 6.3mA which was an acceptable range for current.
+
+
+I also had to use resistors for my LEDs and I used a similar calculation method and found that for the green LEDs I could use 150$\Omega$ and the red LED I could use 220$\Omega$.
+
+
+## Results and Discussion
+I tested the circuit and I was able to get the simultaneous display. One hiccup I ran into was the pin out for the display module was a bit hard to read so I ended up accidentally rewiring one side of the display wrong. I believe in total I spent about 15 hours on this lab, which is a great improvement from last week.
+

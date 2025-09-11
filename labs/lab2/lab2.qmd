@@ -46,6 +46,25 @@ I also had to use resistors for my LEDs and I used a similar calculation method 
 ## Results and Discussion
 I tested the circuit and I was able to get the simultaneous display. One hiccup I ran into was the pin out for the display module was a bit hard to read so I ended up accidentally rewiring one side of the display wrong. I believe in total I spent about 15 hours on this lab, which is a great improvement from last week.
 
+Here are my outputs from my testbenches:
+### Seven Segment waves
+::: {#fig-led1s-testbench}
+![](images/seg.png)
+output of the simulation of my seven segment display testbench
+:::
+
+## DisplayMulti waves
+::: {#fig-led1s-testbench}
+![](images/display.png)
+output of the simulation of my display multi testbench
+:::
+
+## ledSum waves
+::: {#fig-led1s-testbench}
+![](images/ledSumActually.png)
+output of the simulation of my ledSum testbench
+:::
+
 ## AI Prototype
 
 I gave ChatGPT the prompt, "Write SystemVerilog HDL to time multiplex a single seven segment decoder (that decodes from four bits to a common anode seven segment display) to decode two sets of input bits and drive two sets of seven output bits." and got the follwoing code: 

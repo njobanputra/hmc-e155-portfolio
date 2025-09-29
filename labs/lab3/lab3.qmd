@@ -25,14 +25,14 @@ The block diagram in @fig-block-diagram demonstrates the overall architecture of
 Schematic of the physical circuit.
 :::
 
-@fig-schematic shows which pins were connected to the double 7 segment display and which parts and resistor values I used.
+@fig-schematic shows how the project was wired on my breadboard.
 
 ### State Transition 
 ::: {#fig-schematic}
 ![](images/state-transition.png)
 
 
-Schematic of the physical circuit.
+State transition diagram.
 :::
 
 @fig-schematic shows the FSM that I used in this project.

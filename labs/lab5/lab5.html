@@ -275,6 +275,18 @@ Figure&nbsp;4: The math used to validate the velocity.
 <section id="polling-vs.-interrupts" class="level3">
 <h3 class="anchored" data-anchor-id="polling-vs.-interrupts">Polling Vs. Interrupts</h3>
 <p>Polling is when a device is constantly checking the status of our device, so in our case it has to continually check for when it should be computing the velocity. So it is constantly it is continually sending requests to know if it is time to do something. Interrupts basically only go up and alert the program when it absolutely has to do something, otherwise it idles and does nothing. Since polling is constantly checking this results in higher latency and using up a lot more reasources. However, coding for polling is way easier to implment than the interrupts. Interrupts on the otherhand, while difficult to code are much faster and use up less reasources. In this lab, since we have to update the velocity every second, which is a short time frame but would be hard to do with polling because there would be a delay since with polling we are constantly checking when we need to do something and then we finally get the answer to do the thing, we would already be behind the interrupts.</p>
+<div id="fig-polling" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-polling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/polling.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-polling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Polling frequency is 965 Hz.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-polling" class="quarto-xref">Figure&nbsp;5</a> shows the oscilloscope trace that shows that my polling frequency is at 965Hz compared to my interupt frequency at double that.</p>
+<p>Here we see that the polling sampling frequency is much slower than the interrupt sampling frequency.</p>
 <p>In all this lab successfully worked, it was able to tell the velocity somewhat accurately and provide the correct direction. I worked on the lab for about 10 hours, and an additonal 4 for write up and calculations.</p>
 </section>
 <section id="ai-prototype" class="level3">

@@ -1,1 +1,46 @@
 ## Lab 5: Interrupts
+
+# Introduction
+In this lab I created code, and testbenches to control a 7-segment display. A user can use the 4 DIP switches to control the 7 segment display to show 0-F on the hexidecimal scale.
+
+# Technical Documentation
+The source code for this project can be found in this [github repository](https://github.com/njobanputra/e155_lab05).
+
+### Schematic
+::: {#fig-schematic}
+![](images/schematic.png)
+
+Schematic of the physical circuit.
+:::
+
+@fig-schematic shows which pins were connected to the motor.
+
+### Flow Chart
+::: {#fig-flowchart}
+![](images/schematic.png)
+
+A flowchart of the code.
+:::
+
+@fig-flowchart shows the path the code takes.
+
+## Results and Discussion
+I validated the velocity I got from my program by both counting it and taking an oscilliscope trace and doing some math. I set my motor to about 11.33V and my program showed a velocity of about 2.72 revs/second. I started a timer for about 15 seconds and counted the amount of revolutions I saw. Then I scaled that number down for 1 second which is the velocity my program was outputting. I ended up getting a velocity of about 2.667 revs/second. For the math way I started by taking an oscilscope trace.
+
+::: {#fig-oscopetrace}
+![](images/oscopeTrace.png)
+
+An oscilloscope trace of my interrupt signals.
+:::
+
+@fig-oscopetrace shows the interrupt signals.
+
+From the oscilloscope I measured that the frequency was 1.1KHz. Below shows my math to validte the speed through manual hand calculations. 
+
+::: {#fig-math}
+![](images/math.png)
+
+The math used to validate the velocity.
+:::
+
+@fig-math shows the math used to validate the velocity.

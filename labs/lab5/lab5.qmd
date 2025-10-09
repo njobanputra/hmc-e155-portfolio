@@ -48,6 +48,16 @@ The math used to validate the velocity.
 ### Polling Vs. Interrupts
 Polling is when a device is constantly checking the status of our device, so in our case it has to continually check for when it should be computing the velocity. So it is constantly it is continually sending requests to know if it is time to do something. Interrupts basically only go up and alert the program when it absolutely has to do something, otherwise it idles and does nothing. Since polling is constantly checking this results in higher latency and using up a lot more reasources. However, coding for polling is way easier to implment than the interrupts. Interrupts on the otherhand, while difficult to code are much faster and use up less reasources. In this lab, since we have to update the velocity every second, which is a short time frame but would be hard to do with polling because there would be a delay since with polling we are constantly checking when we need to do something and then we finally get the answer to do the thing, we would already be behind the interrupts.
 
+::: {#fig-polling}
+![](images/polling.png)
+
+Polling frequency is 965 Hz.
+:::
+
+@fig-polling shows the oscilloscope trace that shows that my polling frequency is at 965Hz compared to my interupt frequency at double that.
+
+Here we see that the polling sampling frequency is much slower than the interrupt sampling frequency.
+
 In all this lab successfully worked, it was able to tell the velocity somewhat accurately and provide the correct direction. I worked on the lab for about 10 hours, and an additonal 4 for write up and calculations.
 
 ### AI prototype

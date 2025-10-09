@@ -17,7 +17,7 @@ Schematic of the physical circuit.
 
 ### Flow Chart
 ::: {#fig-flowchart}
-![](images/schematic.png)
+![](images/flowchart.png)
 
 A flowchart of the code.
 :::

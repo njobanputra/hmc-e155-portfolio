@@ -1,7 +1,7 @@
 ## Lab 5: Interrupts
 
 # Introduction
-In this lab I created code, and testbenches to control a 7-segment display. A user can use the 4 DIP switches to control the 7 segment display to show 0-F on the hexidecimal scale.
+In this lab I used C code in order to determine the velocity of a motor. Specifically I used interrupts in order to record the velocity at a sampling frequency of 1Hz.
 
 # Technical Documentation
 The source code for this project can be found in this [github repository](https://github.com/njobanputra/e155_lab05).

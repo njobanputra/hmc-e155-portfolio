@@ -257,4 +257,4 @@ void Error_Handler(void)
 }
 ```
 
-Looking at this code it seems a little bit more complex than my solution. It doesn't appear to be using some of the libraries we had access to. I did try and run this code but I got some errors, mainly with these libraries and things not being exactly correct.
+Looking at this code it seems a little bit more complex than my solution. It doesn't appear to be using some of the libraries we had access to. I did try and run this code but I got some errors, mainly with these libraries and things not being exactly correct. Over the past couple of prototypes I have found that AI has been better at C coding than SystemVerilog. I think this is because C is an actual coding language and it has debuggers while SystemVerilog is incredibly niche and is more of a translation of hardware.

@@ -44,3 +44,207 @@ The math used to validate the velocity.
 :::
 
 @fig-math shows the math used to validate the velocity.
+
+### Polling Vs. Interrupts
+Polling is when a device is constantly checking the status of our device, so in our case it has to continually check for when it should be computing the velocity. So it is constantly it is continually sending requests to know if it is time to do something. Interrupts basically only go up and alert the program when it absolutely has to do something, otherwise it idles and does nothing. Since polling is constantly checking this results in higher latency and using up a lot more reasources. However, coding for polling is way easier to implment than the interrupts. Interrupts on the otherhand, while difficult to code are much faster and use up less reasources. In this lab, since we have to update the velocity every second, which is a short time frame but would be hard to do with polling because there would be a delay since with polling we are constantly checking when we need to do something and then we finally get the answer to do the thing, we would already be behind the interrupts.
+
+In all this lab successfully worked, it was able to tell the velocity somewhat accurately and provide the correct direction. I worked on the lab for about 10 hours, and an additonal 4 for write up and calculations.
+
+### AI prototype
+Continuing my adventures with Claude, I gave it the prompt and this is the code it gave back.
+
+```default
+/* Quadrature Encoder Interface for STM32L432KC
+ * Uses TIM2 in encoder mode with PA0 (CH1) and PA1 (CH2)
+ * Hardware handles quadrature decoding automatically
+ */
+
+#include "stm32l4xx_hal.h"
+
+TIM_HandleTypeDef htim2;
+volatile int32_t encoder_position = 0;
+volatile int32_t encoder_velocity = 0;
+volatile uint32_t last_count = 0;
+
+/* Initialize TIM2 in encoder mode */
+void Encoder_Init(void)
+{
+    TIM_Encoder_InitTypeDef sConfig = {0};
+    TIM_MasterConfigTypeDef sMasterConfig = {0};
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+    /* Enable clocks */
+    __HAL_RCC_TIM2_CLK_ENABLE();
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+
+    /* Configure GPIO pins PA0 and PA1 for TIM2_CH1 and TIM2_CH2 */
+    GPIO_InitStruct.Pin = GPIO_PIN_0 | GPIO_PIN_1;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;  // Use pullup for encoder signals
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF1_TIM2;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+    /* Configure TIM2 in encoder mode */
+    htim2.Instance = TIM2;
+    htim2.Init.Prescaler = 0;
+    htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
+    htim2.Init.Period = 0xFFFFFFFF;  // 32-bit timer max value
+    htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+    htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+    
+    /* Encoder mode configuration - count on both edges of both channels */
+    sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
+    sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
+    sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
+    sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
+    sConfig.IC1Filter = 10;  // Input filter to debounce
+    sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;
+    sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
+    sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
+    sConfig.IC2Filter = 10;  // Input filter to debounce
+    
+    if (HAL_TIM_Encoder_Init(&htim2, &sConfig) != HAL_OK)
+    {
+        Error_Handler();
+    }
+
+    sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+    sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+    if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
+    {
+        Error_Handler();
+    }
+
+    /* Set counter to middle position for bidirectional counting */
+    __HAL_TIM_SET_COUNTER(&htim2, 0x80000000);
+    last_count = 0x80000000;
+    
+    /* Start encoder interface */
+    HAL_TIM_Encoder_Start(&htim2, TIM_CHANNEL_ALL);
+    
+    /* Optional: Enable update interrupt for overflow detection */
+    __HAL_TIM_ENABLE_IT(&htim2, TIM_IT_UPDATE);
+    HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(TIM2_IRQn);
+}
+
+/* Get current encoder position (relative to initialization) */
+int32_t Encoder_GetPosition(void)
+{
+    uint32_t current_count = __HAL_TIM_GET_COUNTER(&htim2);
+    encoder_position = (int32_t)(current_count - 0x80000000);
+    return encoder_position;
+}
+
+/* Reset encoder position to zero */
+void Encoder_Reset(void)
+{
+    __HAL_TIM_SET_COUNTER(&htim2, 0x80000000);
+    last_count = 0x80000000;
+    encoder_position = 0;
+}
+
+/* Get encoder direction: 1 = forward, -1 = backward, 0 = stopped */
+int8_t Encoder_GetDirection(void)
+{
+    if (__HAL_TIM_IS_TIM_COUNTING_DOWN(&htim2))
+        return -1;
+    else if (__HAL_TIM_IS_TIM_COUNTING_UP(&htim2))
+        return 1;
+    return 0;
+}
+
+/* Calculate velocity (call this periodically, e.g., every 10ms) */
+int32_t Encoder_GetVelocity(void)
+{
+    uint32_t current_count = __HAL_TIM_GET_COUNTER(&htim2);
+    int32_t delta = (int32_t)(current_count - last_count);
+    last_count = current_count;
+    encoder_velocity = delta;
+    return encoder_velocity;
+}
+
+/* TIM2 Update interrupt handler - detects overflow/underflow */
+void TIM2_IRQHandler(void)
+{
+    if (__HAL_TIM_GET_FLAG(&htim2, TIM_FLAG_UPDATE) != RESET)
+    {
+        if (__HAL_TIM_GET_IT_SOURCE(&htim2, TIM_IT_UPDATE) != RESET)
+        {
+            __HAL_TIM_CLEAR_IT(&htim2, TIM_IT_UPDATE);
+            
+            /* Handle overflow/underflow if needed */
+            // With 32-bit counter, overflow is rare in practice
+        }
+    }
+}
+
+/* Optional: External interrupt approach for index pulse (Z channel)
+ * Connect index pulse to PA10 (can use any GPIO with EXTI)
+ */
+void Encoder_Index_Init(void)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    
+    __HAL_RCC_GPIOA_CLK_ENABLE();
+    
+    GPIO_InitStruct.Pin = GPIO_PIN_10;
+    GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    
+    HAL_NVIC_SetPriority(EXTI15_10_IRQn, 1, 0);
+    HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+}
+
+/* Index pulse interrupt handler */
+void EXTI15_10_IRQHandler(void)
+{
+    if (__HAL_GPIO_EXTI_GET_IT(GPIO_PIN_10) != RESET)
+    {
+        __HAL_GPIO_EXTI_CLEAR_IT(GPIO_PIN_10);
+        
+        /* Reset position on index pulse */
+        Encoder_Reset();
+    }
+}
+
+/* Example usage in main.c */
+void Example_Usage(void)
+{
+    int32_t position, velocity;
+    int8_t direction;
+    
+    /* Initialize encoder */
+    Encoder_Init();
+    
+    /* Optional: Initialize index pulse */
+    // Encoder_Index_Init();
+    
+    while(1)
+    {
+        /* Read position (counts) */
+        position = Encoder_GetPosition();
+        
+        /* Read direction */
+        direction = Encoder_GetDirection();
+        
+        /* Calculate velocity (call at fixed intervals) */
+        velocity = Encoder_GetVelocity();
+        
+        /* Your application code here */
+        HAL_Delay(10);  // 10ms sample period for velocity
+    }
+}
+
+void Error_Handler(void)
+{
+    __disable_irq();
+    while (1)
+    {
+    }
+}
+```
+
+Looking at this code it seems a little bit more complex than my solution. It doesn't appear to be using some of the libraries we had access to. I did try and run this code but I got some errors, mainly with these libraries and things not being exactly correct.
